@@ -97,17 +97,34 @@ function drawTime(timer, remainingMinutes /*Double*/, maxMinutes /* Integer */) 
   ctx.fill();
 
   //타이머 내부 글자
-  let minutes = Math.floor(remainingMinutes);
-  let seconds = Math.ceil((remainingMinutes - minutes) * 60);
+  const minutes = Math.floor(remainingMinutes);
+  const seconds = Math.ceil((remainingMinutes - minutes) * 60);
+  const first = minutes === 0
+    ? ("0" + seconds).slice(-2) + '"'
+    : ("0" + minutes).slice(-2) + "'";
+  const second = minutes > 0
+    ? ("0" + seconds).slice(-2) + '"'
+    : "";
+
+
+  fillTextCenter(ctx, canvas, first);
+  fillTextDown(ctx, canvas, second);
+}
+
+fillTextCenter = (ctx, canvas, text) => {
   ctx.fillStyle = 'black';
   ctx.textAlign = "center";
   ctx.font = "40px Arial";
   ctx.textBaseline = "middle";
-  ctx.fillText(("0" + minutes).slice(-2) + "'", canvas.width / 2 + 5, canvas.height / 2 - 5);
+  ctx.fillText(text, canvas.width / 2 + 5, canvas.height / 2 - 5);
+}
+
+fillTextDown = (ctx, canvas, text) => {
   ctx.fillStyle = 'grey';
+  ctx.textAlign = "center";
   ctx.font = "15px Arial";
   ctx.textBaseline = "top";
-  ctx.fillText(("0" + seconds).slice(-2) + '"', canvas.width / 2 + 2, canvas.height / 2 + 20);
+  ctx.fillText(text, canvas.width / 2 + 2, canvas.height / 2 + 20);
 }
 
 function drawTimerdigits(timer, maxMinutes) { // will be called once, when a new timer is created or resized
