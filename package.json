@@ -1,0 +1,21 @@
+{
+  "name": "time-timer",
+  "version": "1.0.0",
+  "description": "A minimal Time Timer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/toysmoon/time-timer-electron",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "toysmoon",
+  "devDependencies": {
+    "electron": "^4.0.4"
+  }
+}
