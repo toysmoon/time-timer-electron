@@ -139,12 +139,8 @@ function drawTimerdigits(timer, maxMinutes) { // will be called once, when a new
 
 // events
 
-document.addEventListener('mousedown', (event) => {
-  if (event.target.className == 'analogTimer' && event.buttons == 1) {
-    newRemainingMinutes = getMinutesFromPosition(event.offsetX, event.offsetY, event.target.width, event.target.height, maxMinutes);
-    // this.debug.innerText = 'new start time: ' + newRemainingMinutes;
-    drawTime(event.target.parentElement, newRemainingMinutes, maxMinutes);
-  }
+document.addEventListener('click', (event) => {
+
 }, false);
 
 document.addEventListener('mousemove', (event) => {
