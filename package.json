@@ -17,5 +17,8 @@
   "author": "toysmoon",
   "devDependencies": {
     "electron": "^4.0.4"
+  },
+  "dependencies": {
+    "node-notifier": "^5.4.0"
   }
 }
