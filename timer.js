@@ -77,14 +77,14 @@ function drawTime(timer, remainingMinutes /*Double*/, maxMinutes /* Integer */) 
   //현재 지나간 시간 표시
   ctx.fillStyle = '#E1E1E1';
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2.4, 2 * Math.PI, 0);
+  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 2 * Math.PI, 0);
   ctx.closePath();
   ctx.fill();
 
   //현재 남은 시간 표시
   ctx.fillStyle = 'blue';
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2.4, ((maxMinutes - remainingMinutes) / maxMinutes - 0.25) * 2 * Math.PI, 1.5 * Math.PI);
+  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2.05, (remainingMinutes / maxMinutes - 0.25) * 2 * Math.PI, 1.5 * Math.PI, true);
   ctx.lineTo(canvas.width / 2, canvas.height / 2);
   ctx.closePath();
   ctx.fill();
@@ -92,21 +92,26 @@ function drawTime(timer, remainingMinutes /*Double*/, maxMinutes /* Integer */) 
   //타이머 내부 원
   ctx.fillStyle = 'white';
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2.6, 2 * Math.PI, 0);
+  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 3, 2 * Math.PI, 0);
   ctx.closePath();
   ctx.fill();
 
   //타이머 내부 글자
-  const minutes = Math.floor(remainingMinutes);
-  const seconds = Math.ceil((remainingMinutes - minutes) * 60);
+  let minutes = Math.floor(remainingMinutes);
+  let seconds = Math.ceil((remainingMinutes - minutes) * 60);
+
+  if (seconds == 60) {
+    minutes++;
+    seconds = 0;
+  }
+
   const first = minutes === 0
     ? ("0" + seconds).slice(-2) + '"'
     : ("0" + minutes).slice(-2) + "'";
   const second = minutes > 0
     ? ("0" + seconds).slice(-2) + '"'
     : "";
-
-
+  
   fillTextCenter(ctx, canvas, first);
   fillTextDown(ctx, canvas, second);
 }
@@ -157,7 +162,11 @@ function drawTimerdigits(timer, maxMinutes) { // will be called once, when a new
 // events
 
 document.addEventListener('click', (event) => {
-
+  if (event.target.className == 'analogTimer' && newRemainingMinutes > 0) {
+    setStartTime(event.target.parentElement, newRemainingMinutes);
+    startTimer(event.target.parentElement);
+  }
+  newRemainingMinutes = 0;
 }, false);
 
 document.addEventListener('mousemove', (event) => {
@@ -168,21 +177,8 @@ document.addEventListener('mousemove', (event) => {
   }
 }, false);
 
-document.addEventListener('mouseup', (event) => {
-  if (event.target.className == 'analogTimer' && newRemainingMinutes > 0) {
-    setStartTime(event.target.parentElement, newRemainingMinutes);
-    startTimer(event.target.parentElement);
-  }
-  newRemainingMinutes = 0;
-}, false);
-
-window.onload = () => {
-
-};
-
 // utils
-
 function getMinutesFromPosition(x, y, width, height, maxMinutes) {
   maxMinutes = maxMinutes || 60;
-  return (Math.atan2(x - width / 2, y - height / 2) * (180 / Math.PI) + 180) / (360 / maxMinutes);
+  return (180 - Math.atan2(x - width / 2, y - height / 2) * (180 / Math.PI)) / (360 / maxMinutes);
 }
